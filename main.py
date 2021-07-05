@@ -17,12 +17,9 @@ soup = BeautifulSoup(check, 'lxml')
 soup_long = BeautifulSoup(check_long, 'lxml')
 
 block = soup.find('div', class_='forecast-briefly__days')
-block_long = soup_long.find('div', class_='card')
+block_long = soup_long.find_all('div', class_='card')
 
 test = block.find('ul', class_='swiper-wrapper')
-test_long = block_long.find('tbody', 'weather-table__body')
-
-day_long = test_long.find_all('tr')
 
 
 @bot.message_handler(commands=['start'])
@@ -159,28 +156,150 @@ def callback(call):
 
             elif call.data == 'No_Today':
 
-                temp_Today = day_long[0].find('div', class_='weather-table__temp').text
-                status_Today = day_long[0].find('td', class_='weather-table__body-cell '
-                                                             'weather-table__body-cell_type_condition').text
-                pressure_Today = day_long[0].find('td', class_='weather-table__body-cell '
-                                                               'weather-table__body-cell_type_air-pressure').text
-                wet_Today = day_long[0].find('td', class_='weather-table__body-cell '
-                                                          'weather-table__body-cell_type_humidity').text
-                wind_Today = day_long[0].find('td', class_='weather-table__body-cell '
-                                                           'weather-table__body-cell_type_wind '
-                                                           'weather-table__body-cell_wrapper').text
-                feels_Today = day_long[0].find('td', class_='weather-table__body-cell '
-                                                            'weather-table__body-cell_type_feels-like').text
-                result = f'Температура утром:{temp_Today}\n{status_Today}\nДавление:{pressure_Today}\nВлажность:' \
-                         f'{wet_Today}\nВетер:{wind_Today}\nОщущается как:{feels_Today}'
+                test_long = block_long[0].find('tbody', 'weather-table__body')
+                day_long = test_long.find_all('tr')
 
-                bot.send_message(call.message.chat.id, result)
+                temp_Today_morning = day_long[0].find('div', class_='weather-table__temp').text
+                status_Today_morning = day_long[0].find('td', class_='weather-table__body-cell '
+                                                                     'weather-table__body-cell_type_condition').text
+                pressure_Today_morning = day_long[0].find('td', class_='weather-table__body-cell '
+                                                                       'weather-table__body-cell_type_air-pressure').text
+                wet_Today_morning = day_long[0].find('td', class_='weather-table__body-cell '
+                                                                  'weather-table__body-cell_type_humidity').text
+                wind_Today_morning = day_long[0].find('td', class_='weather-table__body-cell '
+                                                                   'weather-table__body-cell_type_wind '
+                                                                   'weather-table__body-cell_wrapper').text
+                feels_Today_morning = day_long[0].find('td', class_='weather-table__body-cell '
+                                                                    'weather-table__body-cell_type_feels-like').text
+
+                temp_Today_daytime = day_long[1].find('div', class_='weather-table__temp').text
+                status_Today_daytime = day_long[1].find('td', class_='weather-table__body-cell '
+                                                                     'weather-table__body-cell_type_condition').text
+                pressure_Today_daytime = day_long[1].find('td', class_='weather-table__body-cell '
+                                                                       'weather-table__body-cell_type_air-pressure').text
+                wet_Today_daytime = day_long[1].find('td', class_='weather-table__body-cell '
+                                                                  'weather-table__body-cell_type_humidity').text
+                wind_Today_daytime = day_long[1].find('td', class_='weather-table__body-cell '
+                                                                   'weather-table__body-cell_type_wind '
+                                                                   'weather-table__body-cell_wrapper').text
+                feels_Today_daytime = day_long[1].find('td', class_='weather-table__body-cell '
+                                                                    'weather-table__body-cell_type_feels-like').text
+
+                temp_Today_evening = day_long[2].find('div', class_='weather-table__temp').text
+                status_Today_evening = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                     'weather-table__body-cell_type_condition').text
+                pressure_Today_evening = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                       'weather-table__body-cell_type_air-pressure').text
+                wet_Today_evening = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                  'weather-table__body-cell_type_humidity').text
+                wind_Today_evening = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                   'weather-table__body-cell_type_wind '
+                                                                   'weather-table__body-cell_wrapper').text
+                feels_Today_evening = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                    'weather-table__body-cell_type_feels-like').text
+
+                temp_Today_night = day_long[2].find('div', class_='weather-table__temp').text
+                status_Today_night = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                   'weather-table__body-cell_type_condition').text
+                pressure_Today_night = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                     'weather-table__body-cell_type_air-pressure').text
+                wet_Today_night = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                'weather-table__body-cell_type_humidity').text
+                wind_Today_night = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                 'weather-table__body-cell_type_wind '
+                                                                 'weather-table__body-cell_wrapper').text
+                feels_Today_night = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                  'weather-table__body-cell_type_feels-like').text
+
+                result_Today = f'Температура утром:{temp_Today_morning} {status_Today_morning} ' \
+                               f'Давление:{pressure_Today_morning} Влажность:' \
+                               f'{wet_Today_morning} Ветер:{wind_Today_morning} Ощущается как:{feels_Today_morning}\n' \
+                               f'Температура днем:{temp_Today_daytime} {status_Today_daytime} ' \
+                               f'Давление:{pressure_Today_daytime} Влажность:' \
+                               f'{wet_Today_daytime} Ветер:{wind_Today_daytime} Ощущается как:{feels_Today_daytime}\n' \
+                               f'Температура вечером:{temp_Today_evening} {status_Today_evening} ' \
+                               f'Давление:{pressure_Today_evening} Влажность:' \
+                               f'{wet_Today_evening} Ветер:{wind_Today_evening} Ощущается как:{feels_Today_evening}\n' \
+                               f'Температура ночью:{temp_Today_night} {status_Today_night} ' \
+                               f'Давление:{pressure_Today_night} Влажность:' \
+                               f'{wet_Today_night} Ветер:{wind_Today_night} Ощущается как:{feels_Today_night}'
+
+                bot.send_message(call.message.chat.id, result_Today)
                 #   remove inline button
                 bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.id, text='Подробно',
                                       reply_markup=None)
 
             elif call.data == 'No_Tomorrow':
-                bot.send_message(call.message.chat.id, 'Кек2')
+
+                test_long = block_long[2].find('tbody', 'weather-table__body')
+                day_long = test_long.find_all('tr')
+
+                temp_Tomorrow_morning = day_long[0].find('div', class_='weather-table__temp').text
+                status_Tomorrow_morning = day_long[0].find('td', class_='weather-table__body-cell '
+                                                                        'weather-table__body-cell_type_condition').text
+                pressure_Tomorrow_morning = day_long[0].find('td', class_='weather-table__body-cell '
+                                                                          'weather-table__body-cell_type_air-pressure').text
+                wet_Tomorrow_morning = day_long[0].find('td', class_='weather-table__body-cell '
+                                                                     'weather-table__body-cell_type_humidity').text
+                wind_Tomorrow_morning = day_long[0].find('td', class_='weather-table__body-cell '
+                                                                      'weather-table__body-cell_type_wind '
+                                                                      'weather-table__body-cell_wrapper').text
+                feels_Tomorrow_morning = day_long[0].find('td', class_='weather-table__body-cell '
+                                                                       'weather-table__body-cell_type_feels-like').text
+
+                temp_Tomorrow_daytime = day_long[1].find('div', class_='weather-table__temp').text
+                status_Tomorrow_daytime = day_long[1].find('td', class_='weather-table__body-cell '
+                                                                        'weather-table__body-cell_type_condition').text
+                pressure_Tomorrow_daytime = day_long[1].find('td', class_='weather-table__body-cell '
+                                                                          'weather-table__body-cell_type_air-pressure').text
+                wet_Tomorrow_daytime = day_long[1].find('td', class_='weather-table__body-cell '
+                                                                     'weather-table__body-cell_type_humidity').text
+                wind_Tomorrow_daytime = day_long[1].find('td', class_='weather-table__body-cell '
+                                                                      'weather-table__body-cell_type_wind '
+                                                                      'weather-table__body-cell_wrapper').text
+                feels_Tomorrow_daytime = day_long[1].find('td', class_='weather-table__body-cell '
+                                                                       'weather-table__body-cell_type_feels-like').text
+
+                temp_Tomorrow_evening = day_long[2].find('div', class_='weather-table__temp').text
+                status_Tomorrow_evening = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                        'weather-table__body-cell_type_condition').text
+                pressure_Tomorrow_evening = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                          'weather-table__body-cell_type_air-pressure').text
+                wet_Tomorrow_evening = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                     'weather-table__body-cell_type_humidity').text
+                wind_Tomorrow_evening = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                      'weather-table__body-cell_type_wind '
+                                                                      'weather-table__body-cell_wrapper').text
+                feels_Tomorrow_evening = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                       'weather-table__body-cell_type_feels-like').text
+
+                temp_Tomorrow_night = day_long[2].find('div', class_='weather-table__temp').text
+                status_Tomorrow_night = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                      'weather-table__body-cell_type_condition').text
+                pressure_Tomorrow_night = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                        'weather-table__body-cell_type_air-pressure').text
+                wet_Tomorrow_night = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                   'weather-table__body-cell_type_humidity').text
+                wind_Tomorrow_night = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                    'weather-table__body-cell_type_wind '
+                                                                    'weather-table__body-cell_wrapper').text
+                feels_Tomorrow_night = day_long[2].find('td', class_='weather-table__body-cell '
+                                                                     'weather-table__body-cell_type_feels-like').text
+
+                result_Tomorrow = f'Температура утром:{temp_Tomorrow_morning} {status_Tomorrow_morning} ' \
+                                  f'Давление:{pressure_Tomorrow_morning} Влажность:' \
+                                  f'{wet_Tomorrow_morning} Ветер:{wind_Tomorrow_morning} Ощущается как:{feels_Tomorrow_morning}\n' \
+                                  f'Температура днем:{temp_Tomorrow_daytime} {status_Tomorrow_daytime} ' \
+                                  f'Давление:{pressure_Tomorrow_daytime} Влажность:' \
+                                  f'{wet_Tomorrow_daytime} Ветер:{wind_Tomorrow_daytime} Ощущается как:{feels_Tomorrow_daytime}\n' \
+                                  f'Температура вечером:{temp_Tomorrow_evening} {status_Tomorrow_evening} ' \
+                                  f'Давление:{pressure_Tomorrow_evening} Влажность:' \
+                                  f'{wet_Tomorrow_evening} Ветер:{wind_Tomorrow_evening} Ощущается как:{feels_Tomorrow_evening}\n' \
+                                  f'Температура ночью:{temp_Tomorrow_night} {status_Tomorrow_night} ' \
+                                  f'Давление:{pressure_Tomorrow_night} Влажность:' \
+                                  f'{wet_Tomorrow_night} Ветер:{wind_Tomorrow_night} Ощущается как:{feels_Tomorrow_night}'
+
+                bot.send_message(call.message.chat.id, result_Tomorrow)
                 #   remove inline button
                 bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.id, text='Подробно',
                                       reply_markup=None)
