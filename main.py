@@ -8,13 +8,21 @@ from telebot import types
 bot = telebot.TeleBot(config.Token)
 
 link_short = "https://yandex.ru/pogoda/moscow"
+link_long = "https://yandex.ru/pogoda/moscow/details"
 
 check = requests.get(link_short).text
+check_long = requests.get(link_long).text
 
 soup = BeautifulSoup(check, 'lxml')
+soup_long = BeautifulSoup(check_long, 'lxml')
 
 block = soup.find('div', class_='forecast-briefly__days')
+block_long = soup_long.find('div', class_='card')
+
 test = block.find('ul', class_='swiper-wrapper')
+test_long = block_long.find('tbody', 'weather-table__body')
+
+day_long = test_long.find_all('tr')
 
 
 @bot.message_handler(commands=['start'])
@@ -150,7 +158,23 @@ def callback(call):
                                       reply_markup=None)
 
             elif call.data == 'No_Today':
-                bot.send_message(call.message.chat.id, 'Кек1')
+
+                temp_Today = day_long[0].find('div', class_='weather-table__temp').text
+                status_Today = day_long[0].find('td', class_='weather-table__body-cell '
+                                                             'weather-table__body-cell_type_condition').text
+                pressure_Today = day_long[0].find('td', class_='weather-table__body-cell '
+                                                               'weather-table__body-cell_type_air-pressure').text
+                wet_Today = day_long[0].find('td', class_='weather-table__body-cell '
+                                                          'weather-table__body-cell_type_humidity').text
+                wind_Today = day_long[0].find('td', class_='weather-table__body-cell '
+                                                           'weather-table__body-cell_type_wind '
+                                                           'weather-table__body-cell_wrapper').text
+                feels_Today = day_long[0].find('td', class_='weather-table__body-cell '
+                                                            'weather-table__body-cell_type_feels-like').text
+                result = f'Температура утром:{temp_Today}\n{status_Today}\nДавление:{pressure_Today}\nВлажность:' \
+                         f'{wet_Today}\nВетер:{wind_Today}\nОщущается как:{feels_Today}'
+
+                bot.send_message(call.message.chat.id, result)
                 #   remove inline button
                 bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.id, text='Подробно',
                                       reply_markup=None)
